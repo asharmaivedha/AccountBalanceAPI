@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: Account Balance API
+  description: Retrieve the balance of a financial account by account ID.
+  version: 1.0.0
+
+servers:
+  - url: https://34.111.248.242.nip.io
+
+paths:
+  /accounts/{accountId}/balance:
+    get:
+      summary: Get account balance
+      description: Returns the balance details for a given account ID.
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: A7X3L9Q2M8B1R4Z6
+      responses:
+        '200':
+          description: Account balance returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+              examples:
+                successResponse:
+                  value:
+                    currency: USD
+                    availableBalance: 1523.75
+                    currentBalance: 1600.00
+                    lastUpdated: 2025-04-30T12:34:56Z
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                unauthorized:
+                  value:
+                    code: 401
+                    message: Unauthorized. Token is invalid or expired.
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notFound:
+                  value:
+                    code: 404
+                    message: Account ID not found.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                serverError:
+                  value:
+                    code: 500
+                    message: An unexpected error occurred.
+      security:
+        - azure_ad_oauth: []
+
+components:
+  securitySchemes:
+    azure_ad_oauth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/e5c945e9-b1e4-4a06-a774-52417e09704c/oauth2/token
+          scopes:
+            api.read: Read account balance information
+
+  schemas:
+    AccountBalance:
+      type: object
+      properties:
+        currency:
+          type: string
+        availableBalance:
+          type: number
+          format: float
+        currentBalance:
+          type: number
+          format: float
+        lastUpdated:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
