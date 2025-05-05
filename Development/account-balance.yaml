@@ -75,7 +75,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://login.microsoftonline.com/e5c945e9-b1e4-4a06-a774-52417e09704c/oauth2/token
+          tokenUrl: https://34.111.248.242.nip.io/get-entraid-token
           scopes:
             api.read: Read account balance information
 
