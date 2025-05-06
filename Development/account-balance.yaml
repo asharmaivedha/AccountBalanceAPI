@@ -22,9 +22,10 @@ paths:
         - name: Authorization
           in: header
           required: true
+          description: Bearer access token from Azure AD
           schema:
             type: string
-            example: Bearer xxxx
+            example: Bearer eyJ0eXAiOiJKV1QiLCJh...
       responses:
         '200':
           description: Account balance returned successfully.
