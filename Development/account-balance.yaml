@@ -19,6 +19,12 @@ paths:
           schema:
             type: string
             example: A7X3L9Q2M8B1R4Z6
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: Bearer xxxx
       responses:
         '200':
           description: Account balance returned successfully.
